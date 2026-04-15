@@ -1,50 +1,44 @@
 # QuickKlinik
 
-Clinic appointment and OTC self-dispensary platform. Built with Next.js (App Router), Supabase, and shadcn UI.
+QuickKlinik is a public-facing healthcare operations website and product initiative focused on making outpatient workflows simpler, clearer, and more affordable.
 
-## Setup
+Primary domain: **[quickklinik.com](https://quickklinik.com)**
 
-1. **Install dependencies**
-   ```bash
-   npm install
-   ```
+## What QuickKlinik does
 
-2. **Environment**
-   - Copy `.env.example` to `.env.local`
-   - Set `NEXT_PUBLIC_SUPABASE_URL` and keys from your [Supabase project](https://supabase.com/dashboard) (Connect dialog or **Settings → API Keys**).
-   - **Client**: `NEXT_PUBLIC_SUPABASE_ANON_KEY` — use the anon key or the publishable key (`sb_publishable_...`); publishable is preferred for rotation.
-   - **Server only**: `SUPABASE_SERVICE_ROLE_KEY` — use the service_role JWT or a secret key (`sb_secret_...`); never expose this. Secret key is preferred and cannot be used in the browser.
-   - With RLS enabled, client access is limited by Postgres roles (`anon`/`authenticated`); the service/secret key bypasses RLS and must only run server-side.
+QuickKlinik is designed for clinics and outpatient teams that need one connected flow across:
 
-3. **Database**
-   - Schema and RLS have been applied via Supabase MCP to the linked project.
-   - To create a clinic and first user: use Supabase Dashboard SQL or run seed scripts (e.g. insert into `clinics`, then sign up and link profile to that clinic).
+- Appointments
+- Patient queue visibility
+- OTC and inventory coordination
+- Role-based operations and audit-ready actions
 
-4. **Run**
-   ```bash
-   npm run dev
-   ```
-   - Open http://localhost:3000 — landing, login, dashboard (after auth).
+The goal is to reduce front-desk friction, improve handoffs between teams, and create a calmer patient journey.
 
-**Demo:** Run `npm run seed` to create a demo clinic with a user and sample data. See [DEMO_CREDENTIALS.md](DEMO_CREDENTIALS.md) for login details.
+## Public experience
 
-## First iteration scope
+The website includes:
 
-- **Auth**: Email sign-in/sign-up, profiles with role + clinic, middleware protection, route/action guards.
-- **Appointments**: Create (patient, doctor, time), list, update status; audit log on create/update.
-- **OTC catalog**: List products for current clinic (no checkout in this iteration).
-- **Inventory**: Add stock (batch + quantity), create batch; audit logged.
-- **Dashboard**: Sidebar nav (Appointments, OTC Catalog, Inventory), sign out.
+- Marketing landing pages describing the product and mission
+- Public survey flow for market validation
+- UUID-based appreciation pages for survey contributors
+- Public contributors showcase page (`/cards`) with minimal profile exposure
 
-## Roles
+## Initiative
 
-- SuperAdmin, ClinicAdmin, Doctor, Nurse, CounterStaff, InventoryStaff  
-- Enforced at route, server action, and Supabase RLS.
+QuickKlinik is an initiative by **Arwindpianist Multimedia & Consulting**.
 
-## Project structure
+## Contact
 
-- `app/` — routes and pages (App Router)
-- `components/` — UI (shadcn) and layout (sidebar)
-- `lib/` — Supabase client/server/middleware, auth helpers
-- `modules/` — domain modules (auth, clinics, appointments, otc, inventory, audit): types, schema, service, actions
-- `types/` — generated DB types
+For partnerships, product interest, or permissions inquiries:
+
+- Website: [quickklinik.com](https://quickklinik.com)
+- General: hello@quickklinik.com
+- Sales: sales@quickklinik.com
+- Enquiries: enquiry@quickklinik.com
+
+## License
+
+This project is **not open source**.
+
+See the [LICENSE](LICENSE) file for terms. Commercial use, resale, and redistribution for profit are prohibited without prior written permission.

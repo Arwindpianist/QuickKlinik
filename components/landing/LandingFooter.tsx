@@ -24,6 +24,20 @@ export function LandingFooter() {
             </a>
             .
           </p>
+          <p className="max-w-md text-center text-xs leading-relaxed text-sidebar-foreground/60 sm:text-left">
+            Contact:{" "}
+            <a href="mailto:hello@quickklinik.com" className="underline decoration-primary/35 underline-offset-4 hover:text-sidebar-foreground">
+              hello@quickklinik.com
+            </a>
+            {" · "}
+            <a href="mailto:sales@quickklinik.com" className="underline decoration-primary/35 underline-offset-4 hover:text-sidebar-foreground">
+              sales@quickklinik.com
+            </a>
+            {" · "}
+            <a href="mailto:enquiry@quickklinik.com" className="underline decoration-primary/35 underline-offset-4 hover:text-sidebar-foreground">
+              enquiry@quickklinik.com
+            </a>
+          </p>
         </div>
         <div className="flex flex-wrap justify-center gap-x-10 gap-y-2 text-sm font-medium sm:justify-end">
           <Link href="/" className="text-sidebar-foreground/68 transition-colors hover:text-sidebar-foreground">
