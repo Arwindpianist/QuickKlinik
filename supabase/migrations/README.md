@@ -1,0 +1,6 @@
+-- QuickKlinik schema is applied via Supabase MCP (plugin-supabase-supabase).
+-- Migrations applied: create_roles_and_clinics, create_profiles, create_doctors_rooms_patients,
+-- create_appointments, create_queue_tokens, create_otc_products_batches, create_otc_orders_payments,
+-- create_inventory_audit_logs, rls_helper_functions, rls_enable_and_policies,
+-- rls_policies_clinic_scoped, rls_policies_otc_batches_items_payments.
+-- See plan: QuickKlinik First Iteration Scaffold

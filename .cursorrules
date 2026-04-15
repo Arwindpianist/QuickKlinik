@@ -1,0 +1,89 @@
+Project: QuickKlinik
+
+General Principles:
+- Use strict TypeScript.
+- Use server components by default.
+- All business logic must run server-side.
+- Never trust client-side validation.
+- Every state-changing action must create an audit log entry.
+- No hardcoded mock data beyond development seed files.
+- All configuration must come from environment variables.
+- Use a layered architecture: UI → Service Layer → Data Layer.
+- Follow modular folder structure by domain.
+- Use Supabase for database, auth, and optional realtime/storage.
+
+Architecture Rules:
+- App Router structure.
+- Use server actions where appropriate.
+- API routes only when external consumption is required.
+- Centralized authentication middleware (Supabase Auth).
+- Role-based authorization guard at route level and action level.
+- Soft deletes for all critical records.
+- Use transactions for financial and inventory operations.
+
+Database Rules:
+- Supabase (PostgreSQL). Use Supabase client/server helpers; no separate ORM unless justified.
+- Schema via Supabase migrations (SQL in repo).
+- All tables must include:
+  - id (uuid, default gen_random_uuid())
+  - createdAt (timestamptz)
+  - updatedAt (timestamptz)
+  - deletedAt (nullable timestamptz)
+- All tenant-scoped tables must include clinicId (or organizationId) and enforce RLS.
+- Index queue-related fields and clinicId/organizationId for tenant queries.
+- Never cascade delete financial or audit records.
+
+Whitelabel / Multi-Tenant Rules:
+- Treat each clinic/hospital as a tenant. Isolate data by clinicId (or organizationId) everywhere.
+- No hardcoded clinic name, logo, or primary color in UI. Source from tenant config (DB or env).
+- Tenant config: displayName, logoUrl, primaryColor, supportEmail, (optional) customDomain. Store in clinics/organizations table or tenant_settings.
+- Use Supabase RLS so all queries are automatically scoped to the current tenant (set via set_config('app.current_clinic_id', ...) in middleware or server context).
+- Single codebase; tenant chosen by domain, subdomain, or login context. No forking per client.
+
+Security Rules:
+- Enforce RBAC strictly (Supabase Auth roles + app-level role checks).
+- Use Supabase RLS for row-level tenant isolation.
+- Validate all inputs using schema validation.
+- Rate-limit public endpoints.
+- Log failed authentication attempts.
+- Do not expose internal IDs publicly (use UUIDs and avoid sequential IDs in URLs).
+- Payment flow must use provider redirect or secure confirmation.
+
+UI Rules:
+- Mobile-first responsive layout.
+- Accessible (WCAG friendly).
+- Kiosk mode must disable browser navigation and external links.
+- Loading states required for all async actions.
+- No UI library until layout baseline is approved.
+
+Design System / Theme Tokens:
+- Use semantic theme tokens (Tailwind + CSS variables) for ALL colors: `bg-background`, `text-foreground`, `bg-card`, `text-muted-foreground`, `bg-primary`, `ring-ring`, etc.
+- Never hardcode hex colors in components. If a new color is needed, add it as a CSS variable token in `app/globals.css`.
+- Brand defaults in `app/globals.css`: `--brand-bg`, `--brand-fg`, `--brand-primary`, `--brand-accent`, `--brand-tint`, `--brand-border`, `--brand-muted`, `--brand-muted-fg`, `--brand-danger`. Use semantic tokens (`--primary`, `--accent`, etc.) in UI, not the brand hex variables directly.
+- Extended shade families (optional): `--color-baltic-blue-{50..950}`, `--color-teal-*`, `--color-verdigris-*`, `--color-mint-leaf-*`, `--color-cream-*`.
+- Tenant branding overrides must flow through CSS variables (HSL triplets):
+  - `--tenant-primary`, `--tenant-primary-foreground`, `--tenant-accent`, `--tenant-ring`
+  - These are mapped to `--primary`, `--primary-foreground`, `--accent`, `--ring` in `app/globals.css`
+
+Domain Modules:
+- Auth
+- Clinics
+- Doctors
+- Patients
+- Appointments
+- Queue
+- OTC Products
+- Inventory
+- Orders
+- Payments
+- Audit Logs
+
+Testing:
+- Write basic integration tests for:
+  - Appointment booking
+  - OTC order creation
+  - Inventory deduction
+  - Role enforcement
+
+Documentation:
+- Every module must include README explaining purpose and data flow.
