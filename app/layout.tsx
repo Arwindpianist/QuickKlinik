@@ -23,6 +23,27 @@ export const metadata: Metadata = {
   metadataBase: resolveMetadataBase(),
   title: "QuickKlinik",
   description: "Clinic appointment and OTC self-dispensary platform",
+  openGraph: {
+    title: "QuickKlinik",
+    description: "Clinic appointment and OTC self-dispensary platform",
+    url: "/",
+    siteName: "QuickKlinik",
+    images: [
+      {
+        url: "/social-preview.jpg",
+        width: 1024,
+        height: 538,
+        alt: "QuickKlinik product preview",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "QuickKlinik",
+    description: "Clinic appointment and OTC self-dispensary platform",
+    images: ["/social-preview.jpg"],
+  },
   alternates: {
     canonical: "/",
   },
