@@ -32,6 +32,7 @@ yarn-error.log*
 .env.example
 
 # sensitive files / credentials
+.cursorrules
 *.key
 *.p12
 *.pfx
