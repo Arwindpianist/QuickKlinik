@@ -411,7 +411,7 @@ export function HomeLanding() {
                     <Link href="/survey">Complete the survey</Link>
                   </Button>
                   <Button asChild size="lg" variant="outline" className="kk-cta-outline min-h-11 w-full sm:w-auto">
-                    <Link href="/survey">See UUID page preview</Link>
+                    <Link href="/cards">See UUID page preview</Link>
                   </Button>
                 </div>
               </div>
