@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { LandingNav } from "@/components/landing/LandingNav";
 import { LandingFooter } from "@/components/landing/LandingFooter";
@@ -8,6 +9,71 @@ import { CardActions } from "./CardActions";
 
 function isUuid(value: string): boolean {
   return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value);
+}
+
+function formatUtcDateLabel(dateIso: string): string {
+  return new Date(dateIso).toLocaleDateString("en-GB", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    timeZone: "UTC",
+  });
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  if (!isUuid(id)) {
+    return {
+      title: "Contributor Card | QuickKlinik",
+      description: "Survey completion card from the QuickKlinik community.",
+    };
+  }
+
+  const { data, error } = await getSurveyCardByUuid(id);
+  if (error || !data) {
+    return {
+      title: "Contributor Card | QuickKlinik",
+      description: "Survey completion card from the QuickKlinik community.",
+    };
+  }
+
+  const name = data.name?.trim() || "Contributor";
+  const completedLabel = formatUtcDateLabel(data.created_at);
+  const title = `${name} | QuickKlinik Contributor Card`;
+  const description = `${name} completed the QuickKlinik survey on ${completedLabel}.`;
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: `/cards/${id}`,
+    },
+    openGraph: {
+      title,
+      description,
+      url: `/cards/${id}`,
+      type: "website",
+      siteName: "QuickKlinik",
+      images: [
+        {
+          url: "/social-preview.jpg",
+          width: 1024,
+          height: 538,
+          alt: `${name}'s QuickKlinik contributor card`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["/social-preview.jpg"],
+    },
+  };
 }
 
 export default async function SurveyCardPage({
@@ -22,12 +88,7 @@ export default async function SurveyCardPage({
   if (error || !data) notFound();
 
   const name = data.name?.trim() || "Contributor";
-  const completedLabel = new Date(data.created_at).toLocaleDateString("en-GB", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-    timeZone: "UTC",
-  });
+  const completedLabel = formatUtcDateLabel(data.created_at);
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
